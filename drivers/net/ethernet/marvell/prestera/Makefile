@@ -14,3 +14,4 @@ ccflags-$(CONFIG_MRVL_PRESTERA_DEBUG) += -DCONFIG_MRVL_PRESTERA_DEBUG
 
 obj-$(CONFIG_PRESTERA_PCI)	+= prestera_pci.o
 obj-$(CONFIG_PRESTERA_SHM)	+= prestera_shm.o
+obj-$(CONFIG_SWDEVSAI_NL)	+= swdevsai_nl.o
