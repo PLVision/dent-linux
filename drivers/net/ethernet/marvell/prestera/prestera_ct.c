@@ -152,6 +152,8 @@ struct prestera_ct_priv *prestera_ct_init(struct prestera_acl *acl)
 {
 	struct prestera_ct_priv *ct_priv;
 
+        return NULL;
+
 	ct_priv = kzalloc(sizeof(*ct_priv), GFP_KERNEL);
 	if (!ct_priv)
 		return ERR_PTR(-ENOMEM);
@@ -172,8 +174,6 @@ struct prestera_ct_priv *prestera_ct_init(struct prestera_acl *acl)
 
 void prestera_ct_clean(struct prestera_ct_priv *ct_priv)
 {
-	u8 uid = ct_priv->pcl_id & PRESTERA_ACL_KEYMASK_PCL_ID_USER;
-
 	if (!ct_priv)
 		return;
 
@@ -181,7 +181,7 @@ void prestera_ct_clean(struct prestera_ct_priv *ct_priv)
 
 	prestera_acl_rule_entry_destroy(ct_priv->acl, ct_priv->re);
 	prestera_acl_vtcam_id_put(ct_priv->acl, ct_priv->vtcam_id);
-	idr_remove(&ct_priv->acl->uid, uid);
+	idr_remove(&ct_priv->acl->uid, ct_priv->pcl_id & PRESTERA_ACL_KEYMASK_PCL_ID_USER);
 	rhashtable_destroy(&ct_priv->zone_ht);
 	kfree(ct_priv);
 }

@@ -349,6 +349,26 @@ static int prestera_port_get_offload_stats(int attr_id,
 	return -EINVAL;
 }
 
+static int prestera_port_get_port_parent_id(struct net_device *dev,
+					  struct netdev_phys_item_id *ppid)
+{
+	const struct prestera_port *port = netdev_priv(dev);
+
+	ppid->id_len = sizeof(port->sw->id);
+
+	memcpy(&ppid->id, &port->sw->id, ppid->id_len);
+	return 0;
+}
+
+static int prestera_port_get_phys_port_name(struct net_device *dev,
+					  char *buf, size_t len)
+{
+	const struct prestera_port *port = netdev_priv(dev);
+
+	snprintf(buf, len, "%u", port->fp_id);
+	return 0;
+}
+
 static const struct net_device_ops prestera_netdev_ops = {
 	.ndo_open = prestera_port_open,
 	.ndo_stop = prestera_port_close,
@@ -361,6 +381,8 @@ static const struct net_device_ops prestera_netdev_ops = {
 	.ndo_has_offload_stats = prestera_port_has_offload_stats,
 	.ndo_get_offload_stats = prestera_port_get_offload_stats,
 	.ndo_get_devlink_port = prestera_devlink_get_port,
+	.ndo_get_phys_port_name = prestera_port_get_phys_port_name,
+	.ndo_get_port_parent_id = prestera_port_get_port_parent_id
 };
 
 bool prestera_netdev_check(const struct net_device *dev)
@@ -916,7 +938,7 @@ static int __prestera_ports_alloc(struct prestera_switch *sw)
 		net_dev->features |= NETIF_F_NETNS_LOCAL | NETIF_F_HW_TC;
 		net_dev->ethtool_ops = &prestera_ethtool_ops;
 		net_dev->netdev_ops = &prestera_netdev_ops;
-		SET_NETDEV_DEV(net_dev, sw->dev->dev);
+		//SET_NETDEV_DEV(net_dev, sw->dev->dev);
 
 		net_dev->mtu = min_t(unsigned int, sw->mtu_max,
 				     PRESTERA_MTU_DEFAULT);
@@ -2242,7 +2264,7 @@ static int prestera_init(struct prestera_switch *sw)
 		goto err_hw_switch_init;
 	}
 
-	prestera_dev_type_detect(sw);
+	//prestera_dev_type_detect(sw);
 
 	prestera_sct_init(sw);
 

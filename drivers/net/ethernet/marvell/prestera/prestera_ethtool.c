@@ -559,8 +559,8 @@ static void prestera_port_get_drvinfo(struct net_device *dev,
 	struct prestera_switch *sw = port->sw;
 
 	strlcpy(drvinfo->driver, prestera_driver_kind, sizeof(drvinfo->driver));
-	strlcpy(drvinfo->bus_info, dev_name(sw->dev->dev),
-		sizeof(drvinfo->bus_info));
+//	strlcpy(drvinfo->bus_info, dev_name(sw->dev->dev),
+//		sizeof(drvinfo->bus_info));
 	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
 		 "%d.%d.%d",
 		 sw->dev->fw_rev.maj,

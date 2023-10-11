@@ -453,6 +453,8 @@ int prestera_counter_init(struct prestera_switch *sw)
 	counter->sw = sw;
 	sw->counter = counter;
 
+	return 0;
+
 	INIT_DELAYED_WORK(&counter->stats_dw, prestera_counter_stats_work);
 	schedule_delayed_work(&counter->stats_dw, COUNTER_POLL_TIME);
 
@@ -464,7 +466,7 @@ void prestera_counter_fini(struct prestera_switch *sw)
 	struct prestera_counter *counter = sw->counter;
 	u32 i;
 
-	cancel_delayed_work_sync(&counter->stats_dw);
+	//cancel_delayed_work_sync(&counter->stats_dw);
 
 	for (i = 0; i < counter->block_list_len; i++)
 		WARN_ON(counter->block_list[i]);

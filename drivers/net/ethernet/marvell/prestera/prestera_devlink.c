@@ -534,6 +534,10 @@ int prestera_devlink_register(struct prestera_switch *sw)
 	struct devlink *dl = priv_to_devlink(sw);
 	int err;
 
+
+	/* TODO: devlink->dev->bus->name is NULL */
+        return 0;
+
 	err = devlink_register(dl);
 	if (err) {
 		dev_err(sw->dev->dev, "devlink_register failed: %d\n", err);
@@ -565,6 +569,9 @@ void prestera_devlink_unregister(struct prestera_switch *sw)
 {
 	struct devlink *dl = priv_to_devlink(sw);
 
+	/* TODO: devlink->dev->bus->name is NULL */
+        return;
+
 	prestera_devlink_traps_fini(sw);
 	prestera_storm_control_fini(sw);
 	devlink_unregister(dl);
@@ -580,6 +587,7 @@ int prestera_devlink_port_register(struct prestera_port *port)
 	int i;
 
 	sc = sw->storm_control;
+	return 0;
 
 	dl = priv_to_devlink(sw);
 
@@ -623,6 +631,7 @@ void prestera_devlink_port_unregister(struct prestera_port *port)
 	int i;
 
 	sc = sw->storm_control;
+	return;
 
 	devlink_port_params_unpublish(&port->dl_port);
 
@@ -639,11 +648,13 @@ void prestera_devlink_port_unregister(struct prestera_port *port)
 
 void prestera_devlink_port_set(struct prestera_port *port)
 {
+	return;
 	devlink_port_type_eth_set(&port->dl_port, port->net_dev);
 }
 
 void prestera_devlink_port_clear(struct prestera_port *port)
 {
+	return;
 	devlink_port_type_clear(&port->dl_port);
 }
 

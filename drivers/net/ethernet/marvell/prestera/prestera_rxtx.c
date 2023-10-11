@@ -753,6 +753,9 @@ int prestera_rxtx_switch_init(struct prestera_switch *sw)
 	if (!cpu_code_stats)
 		return -ENOMEM;
 
+        /* sw->rxtx should be NULL for xmit to drop packet */
+        return 0;
+
 	sw->rxtx = kzalloc(sizeof(*sw->rxtx), GFP_KERNEL);
 	if (!sw->rxtx) {
 		err = -ENOMEM;
@@ -821,6 +824,7 @@ void prestera_rxtx_switch_fini(struct prestera_switch *sw)
 {
 	struct prestera_rxtx_sdma *sdma = &sw->rxtx->sdma;
 
+/*
 	prestera_hw_event_handler_unregister(sw, PRESTERA_EVENT_TYPE_RXTX);
 	napi_disable(&sdma->rx_napi);
 	netif_napi_del(&sdma->rx_napi);
@@ -828,6 +832,7 @@ void prestera_rxtx_switch_fini(struct prestera_switch *sw)
 	prestera_sdma_tx_fini(sdma);
 	dma_pool_destroy(sdma->desc_pool);
 	kfree(sw->rxtx);
+*/
 	sw->rxtx = NULL;
 	kfree(cpu_code_stats);
 }
